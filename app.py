@@ -104,3 +104,4 @@ with tab3:
 
 st.markdown("---")
 st.caption("🚀 Built with Streamlit | Ahmed’s Stock Analyzer")
+
