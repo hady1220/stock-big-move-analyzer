@@ -33,7 +33,10 @@ st.sidebar.info("Upload stock price data (CSV) with Date & Close columns.")
 # -----------------------------
 @st.cache_data
 def load_data(file):
-    df = pd.read_csv(file)
+    df = pd.read_csv(file, sep=None, engine='python')
+    if "Date" not in df.columns or "Close" not in df.columns:
+        st.error("CSV file must contain 'Date' and 'Close' columns.")
+        st.stop()
     df['Date'] = pd.to_datetime(df['Date'])
     df = df.sort_values("Date").reset_index(drop=True)
     return df
@@ -41,8 +44,7 @@ def load_data(file):
 if uploaded_file:
     df = load_data(uploaded_file)
 else:
-    df = pd.read_csv("data/AAPL_sample.csv")
-    df['Date'] = pd.to_datetime(df['Date'])
+    df = load_data("data/AAPL_sample.csv")
 
 # -----------------------------
 # Detect Big Moves
@@ -104,4 +106,5 @@ with tab3:
 
 st.markdown("---")
 st.caption("🚀 Built with Streamlit | Ahmed’s Stock Analyzer")
+
 
